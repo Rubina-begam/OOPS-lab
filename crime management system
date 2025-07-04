@@ -1,0 +1,110 @@
+abstract class User {
+    protected String username;
+    protected String password;
+    public abstract void showMenu();
+}
+
+// --- File: Admin.java ---
+class Admin extends User {
+    @Override
+    public void showMenu() {
+        System.out.println("Admin Menu Displayed");
+    }
+}
+
+// --- File: Officer.java ---
+class Officer extends User {
+    @Override
+    public void showMenu() {
+        System.out.println("Officer Menu Displayed");
+    }
+}
+
+// --- File: Crime.java ---
+class Crime {
+    private String crimeId;
+    private String type;
+    private String location;
+    private String status;
+
+    public Crime(String crimeId, String type, String location, String status) {
+        this.crimeId = crimeId;
+        this.type = type;
+        this.location = location;
+        this.status = status;
+    }
+
+    public void displayCrime() {
+        System.out.println("Crime ID: " + crimeId);
+    }
+}
+
+// --- File: Person.java ---
+class Person {
+    String name;
+    int age;
+}
+
+// --- File: Criminal.java ---
+class Criminal extends Person {
+    String crimeHistory;
+    public void displayProfile() {
+        System.out.println("Criminal: " + name);
+    }
+}
+
+// --- File: CrimeSearchTask.java ---
+class CrimeSearchTask implements Runnable {
+    private String searchParameter;
+    public CrimeSearchTask(String param) {
+        this.searchParameter = param;
+    }
+    @Override
+    public void run() {
+        System.out.println("Searching for: " + searchParameter);
+    }
+}
+
+// --- File: Server.java ---
+class Server {
+    public static void main(String[] args) throws Exception {
+        java.net.ServerSocket serverSocket = new java.net.ServerSocket(1234);
+        System.out.println("Server started, waiting for clients...");
+        while (true) {
+            java.net.Socket clientSocket = serverSocket.accept();
+            System.out.println("Client connected: " + clientSocket.getInetAddress());
+        }
+    }
+}
+
+// --- File: Client.java ---
+class Client {
+    public static void main(String[] args) throws Exception {
+        java.net.Socket socket = new java.net.Socket("localhost", 1234);
+        System.out.println("Connected to server");
+    }
+}
+
+// --- File: DBConnector.java ---
+class DBConnector {
+    public static java.sql.Connection connect() throws Exception {
+        Class.forName("com.mysql.cj.jdbc.Driver");
+        return java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/crime_db", "root", "password");
+    }
+}
+
+// --- File: CrimeGUI.java ---
+import javax.swing.*;
+
+class CrimeGUI extends JFrame {
+    public CrimeGUI() {
+        setTitle("Crime Management System");
+        setSize(400, 300);
+        JButton btn = new JButton("Submit");
+        add(btn);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new CrimeGUI().setVisible(true));
+    }
+}
